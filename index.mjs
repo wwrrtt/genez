@@ -1,7 +1,7 @@
 import http from 'http';
 import net from 'net';
 import { parse } from 'url';
-import { WebSocketServer, createWebSocketStream } from 'ws';
+import WebSocket from 'ws';
 import { TextDecoder } from 'util';
 
 const uuid = (process.env.UUID || 'ee1feada-4e2f-4dc3-aaa6-f97aeed0286b').replaceAll('-', '');
@@ -18,7 +18,7 @@ const server = http.createServer((req, res) => {
 });
 
 // 正确创建 WebSocketServer 实例
-const wss = new WebSocketServer({ noServer: true });
+const wss = new WebSocket.Server({ noServer: true });
 
 server.on('upgrade', (request, socket, head) => {
   const pathname = parse(request.url).pathname;
@@ -45,7 +45,7 @@ wss.on('connection', ws => {
 
     console.log('conn:', host, port);
     ws.send(new Uint8Array([VERSION, 0]));
-    const duplex = createWebSocketStream(ws);
+    const duplex = WebSocket.createWebSocketStream(ws);
     net.connect({ host, port }, function() {
       this.write(msg.slice(i));
       duplex.on('error', console.error.bind(this, 'E1:')).pipe(this).on('error', console.error.bind(this, 'E2:')).pipe(duplex);
