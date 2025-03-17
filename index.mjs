@@ -1,16 +1,13 @@
-import { createServer } from 'http';
-import { connect } from 'net';
+import http from 'http';
+import net from 'net';
 import { parse } from 'url';
 import WebSocket from 'ws';
 import { TextDecoder } from 'util';
 
-const WebSocketServer = WebSocket.Server;
-const createWebSocketStream = WebSocket.createWebSocketStream;
-
 const uuid = (process.env.UUID || 'ee1feada-4e2f-4dc3-aaa6-f97aeed0286b').replaceAll('-', '');
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
-const server = createServer((req, res) => {
+const server = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/') {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end('hello world');
@@ -20,7 +17,8 @@ const server = createServer((req, res) => {
   }
 });
 
-const wss = new WebSocketServer({ noServer: true });
+// 正确创建 WebSocketServer 实例
+const wss = new WebSocket.Server({ noServer: true });
 
 server.on('upgrade', (request, socket, head) => {
   const pathname = parse(request.url).pathname;
@@ -47,8 +45,8 @@ wss.on('connection', ws => {
 
     console.log('conn:', host, port);
     ws.send(new Uint8Array([VERSION, 0]));
-    const duplex = createWebSocketStream(ws);
-    connect({ host, port }, function() {
+    const duplex = WebSocket.createWebSocketStream(ws);
+    net.connect({ host, port }, function() {
       this.write(msg.slice(i));
       duplex.on('error', console.error.bind(this, 'E1:')).pipe(this).on('error', console.error.bind(this, 'E2:')).pipe(duplex);
     }).on('error', console.error.bind(this, 'Conn-Err:', { host, port }));
