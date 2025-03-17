@@ -10,7 +10,7 @@ async function startServer() {
   const TextDecoder = util.TextDecoder;
 
   const uuid = (process.env.UUID || 'ee1feada-4e2f-4dc3-aaa6-f97aeed0286b').replaceAll('-', '');
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 8080;
 
   const server = http.createServer((req, res) => {
     if (req.method === 'GET' && req.url === '/') {
