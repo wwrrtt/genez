@@ -1,18 +1,15 @@
 {
-  "name": "lostme",
+  "name": "my-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.mjs",
-  "types": "module",
+  "description": "good",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
   "dependencies": {
-    "express": "^4.19.2",
-    "ws": "^8.5.1"
+    "ws": "^8.5.1",
+    "download": "^8.0.0",
+    "axios": "^0.24.0",
+    "express": "^4.17.1"
   }
 }
