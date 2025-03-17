@@ -1,8 +1,11 @@
 import { createServer } from 'http';
 import { connect } from 'net';
 import { parse } from 'url';
-import { Server as WebSocketServer } from 'ws';
-import { createWebSocketStream } from 'ws';
+import WebSocket from 'ws';
+import { TextDecoder } from 'util';
+
+const WebSocketServer = WebSocket.Server;
+const createWebSocketStream = WebSocket.createWebSocketStream;
 
 const uuid = (process.env.UUID || 'ee1feada-4e2f-4dc3-aaa6-f97aeed0286b').replaceAll('-', '');
 const port = process.env.PORT || 8080;
